@@ -1,5 +1,5 @@
 import { Expose } from 'class-transformer';
-export class SignUpOutput {
+export class AccessTokenOutput {
     @Expose()
     id: number;
 
@@ -7,11 +7,5 @@ export class SignUpOutput {
     firstName: string;
 
     @Expose()
-    lastName: string;
-
-    @Expose()
     email: string;
-
-    @Expose()
-    phone: string;
 }

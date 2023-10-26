@@ -1,11 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 import { SignUpInput } from 'src/auth/dtos/signup-input.dto';
 import { SignUpOutput } from 'src/auth/dtos/signup-output.dto';
-import { plainToClass } from 'class-transformer';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { SignInInput } from '../dtos/signin-input.dto';
 import { SignInOutput } from '../dtos/signin-output.dto';
 import { JwtService } from '@nestjs/jwt';
@@ -18,29 +17,27 @@ export class AuthService {
         private jwtService: JwtService
     ) { }
 
-    async signup(input: SignUpInput): Promise<SignUpOutput> {
-        const user = plainToClass(User, input);
-        user.password = await hash(input.password, 10)
+    async signup(signUpInput: SignUpInput): Promise<SignUpOutput> {
+        const user = this.usersRepository.create(signUpInput);
+        user.password = await hash(user.password, 10)
         await this.usersRepository.save(user);
-        return plainToClass(SignUpOutput, user, {
-            excludeExtraneousValues: true
-        })
+        return user;
     }
 
-    signIn(input: SignInInput): SignInOutput {
+    async signIn(input: SignInInput): Promise<SignInOutput> {
+        const user = await this.usersRepository.findOne({ where: { email: input.email } });
+        if (!user) throw new BadRequestException('Email or password is incorrect');
 
-        const subject = { sub: 1 };
+        const match = await compare(input.password, user.password);
+        if (!match) throw new BadRequestException('Email or password is incorrect');
         const payload = {
-            email: 'sohel@gmail.com',
+            id: user.id,
+            email: user.email,
         };
 
-        const token = {
-            token: this.jwtService.sign(
-                { ...payload, ...subject },
-                { expiresIn: 1 },
-            ),
+        return {
+            access_token: await this.jwtService.signAsync(payload),
         };
-        return token;
     }
 
 

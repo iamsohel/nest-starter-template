@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
@@ -6,6 +6,8 @@ import { SignUpInput } from 'src/auth/dtos/signup-input.dto';
 import { SignUpOutput } from 'src/auth/dtos/signup-output.dto';
 import { plainToClass } from 'class-transformer';
 import { hash } from 'bcrypt';
+import { UserOutput } from '../dtos/user-output.dto';
+import { AccessTokenOutput } from 'src/auth/dtos/access-token-output.dto';
 
 @Injectable()
 export class UsersService {
@@ -22,13 +24,19 @@ export class UsersService {
         return this.usersRepository.findOneBy({ id });
     }
 
-    async signup(input: SignUpInput): Promise<SignUpOutput> {
+    async me(user: AccessTokenOutput): Promise<UserOutput | null> {
+        const currentUser = await this.usersRepository.findOneBy({ id: user.id });
+        if (!currentUser) {
+            throw new NotFoundException('User not found')
+        }
+        return currentUser;
+    }
+
+    async createUser(input: SignUpInput): Promise<SignUpOutput> {
         const user = plainToClass(User, input);
         user.password = await hash(input.password, 10)
         await this.usersRepository.save(user);
-        return plainToClass(SignUpOutput, user, {
-            excludeExtraneousValues: true
-        })
+        return user;
     }
 
     async remove(id: number): Promise<void> {
