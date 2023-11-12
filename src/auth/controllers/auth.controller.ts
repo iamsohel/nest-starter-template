@@ -4,11 +4,11 @@ import { SignUpOutput } from '../dtos/signup-output.dto';
 import { AuthService } from '../services/auth.service';
 import { SignInInput } from '../dtos/signin-input.dto';
 import { SignInOutput } from '../dtos/signin-output.dto';
-import { Serialize } from 'src/shared/interceptors/serialize.interceptor';
+import { Serialize } from 'src/common/interceptors/serialize.interceptor';
 import { Public } from '../decorators/public.decorator';
-import { AppLogger } from 'src/shared/logger/logger.service';
-import { ReqContext } from 'src/shared/request-context/req-context.decorator';
-import { RequestContext } from 'src/shared/request-context/request-context.dto';
+import { AppLogger } from 'src/common/logger/logger.service';
+import { ReqContext } from 'src/common/request-context/req-context.decorator';
+import { RequestContext } from 'src/common/request-context/request-context.dto';
 
 @Controller('auth')
 export class AuthController {

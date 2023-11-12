@@ -21,7 +21,7 @@ describe('AllExceptionsFilter', () => {
   let mockResponse: any;
 
   const mockConfigService = {
-    get: (key) => 'development',
+    get: () => 'development',
   };
   const mockedLogger = {
     warn: jest.fn().mockReturnThis(),
@@ -89,7 +89,7 @@ describe('AllExceptionsFilter', () => {
   it('should handle unhandled error with status code 500', async () => {
     filter.catch(mockError, mockContext);
     expect(mockResponse.status).toBeCalledWith(
-      HttpStatus.INTERNAL_SERVER_ERROR,
+      HttpStatus.INTERNAL_SERVER_ERROR
     );
   });
 
@@ -101,7 +101,7 @@ describe('AllExceptionsFilter', () => {
           statusCode: HttpStatus.NOT_FOUND,
           message: mockMessage1,
         }),
-      }),
+      })
     );
   });
 
@@ -113,7 +113,7 @@ describe('AllExceptionsFilter', () => {
           statusCode: HttpStatus.BAD_REQUEST,
           details: mockMessage2,
         }),
-      }),
+      })
     );
   });
 
@@ -129,7 +129,7 @@ describe('AllExceptionsFilter', () => {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           message: mockMessage3,
         }),
-      }),
+      })
     );
 
     // configSpy.mockClear();
@@ -147,7 +147,7 @@ describe('AllExceptionsFilter', () => {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Internal server error',
         }),
-      }),
+      })
     );
 
     configSpy.mockClear();
@@ -160,7 +160,7 @@ describe('AllExceptionsFilter', () => {
         error: expect.objectContaining({
           requestId: mockRequest.headers[REQUEST_ID_TOKEN_HEADER],
         }),
-      }),
+      })
     );
   });
 
@@ -171,7 +171,7 @@ describe('AllExceptionsFilter', () => {
         error: expect.objectContaining({
           path: mockRequest.url,
         }),
-      }),
+      })
     );
   });
 
@@ -189,7 +189,7 @@ describe('AllExceptionsFilter', () => {
         error: expect.objectContaining({
           timestamp: mockDate.toISOString(),
         }),
-      }),
+      })
     );
     dateSpy.mockClear();
   });
