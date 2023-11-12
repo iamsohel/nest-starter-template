@@ -29,10 +29,10 @@ export class LoggingInterceptor implements NestInterceptor {
 
         const responseTime = Date.now() - now;
 
-        const resData = { method, statusCode, responseTime };
+        const responseData = { method, statusCode, responseTime };
 
-        this.appLogger.log(ctx, 'Request completed', { resData });
-      }),
+        this.appLogger.log(ctx, 'Request completed', { responseData });
+      })
     );
   }
 }

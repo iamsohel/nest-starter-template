@@ -18,7 +18,7 @@ export class AllExceptionsFilter<T> implements ExceptionFilter {
   /** set logger context */
   constructor(
     private config: ConfigService,
-    private readonly logger: AppLogger,
+    private readonly logger: AppLogger
   ) {
     this.logger.setContext(AllExceptionsFilter.name);
   }
@@ -38,16 +38,12 @@ export class AllExceptionsFilter<T> implements ExceptionFilter {
     let errorName: string;
     let message: string;
     let details: string | Record<string, any>;
-    // TODO : Based on language value in header, return a localized message.
-    const acceptedLanguage = 'ja';
-    let localizedMessage: string;
 
     // TODO : Refactor the below cases into a switch case and tidy up error response creation.
     if (exception instanceof BaseApiException) {
       statusCode = exception.getStatus();
       errorName = exception.constructor.name;
       message = exception.message;
-      localizedMessage = exception.localizedMessage[acceptedLanguage];
       details = exception.details || exception.getResponse();
     } else if (exception instanceof HttpException) {
       statusCode = exception.getStatus();
@@ -69,7 +65,6 @@ export class AllExceptionsFilter<T> implements ExceptionFilter {
     const error = {
       statusCode,
       message,
-      localizedMessage,
       errorName,
       details,
       // Additional meta added by us.

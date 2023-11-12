@@ -1,7 +1,5 @@
-import { plainToClass } from 'class-transformer';
 import { Request } from 'express';
 
-import { AccessTokenOutput } from 'src/auth/dtos/access-token-output.dto';
 import {
   FORWARDED_FOR_TOKEN_HEADER,
   REQUEST_ID_TOKEN_HEADER,
