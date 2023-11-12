@@ -1,4 +1,4 @@
-import { Module, Global } from '@nestjs/common'
+import { Module, Global } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -42,4 +42,4 @@ import { AppLoggerModule } from './logger/logger.module';
     },
   ],
 })
-export class SharedModule {}
+export class CommonModule {}

@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -9,9 +10,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
 
-  app.useGlobalPipes(
-    new ValidationPipe(VALIDATION_PIPE_OPTIONS)
-  )
+  app.useGlobalPipes(new ValidationPipe(VALIDATION_PIPE_OPTIONS));
   app.use(RequestIdMiddleware);
   app.enableCors();
 
@@ -23,8 +22,11 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
-  await app.listen(4000, () => {
-    console.log(`App is running on port 4000`)
+
+  const configService = app.get(ConfigService);
+  const port = configService.get<number>('port');
+  await app.listen(port, () => {
+    console.log(`App is running on port 4000`);
   });
 }
 bootstrap();
