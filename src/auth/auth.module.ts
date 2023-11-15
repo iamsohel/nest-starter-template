@@ -8,14 +8,20 @@ import { AuthGuard } from './guards/auth.guard';
 
 @Module({
   controllers: [AuthController],
-  imports: [UsersModule, JwtModule.register({
-    global: true,
-    secret: 'thisisecretsKey',
-    signOptions: { expiresIn: '3600s' },
-  }),],
-  providers: [AuthService, {
-    provide: APP_GUARD,
-    useClass: AuthGuard,
-  },],
+  imports: [
+    UsersModule,
+    JwtModule.register({
+      global: true,
+      secret: 'thisisecretsKey',
+      signOptions: { expiresIn: '3600s' },
+    }),
+  ],
+  providers: [
+    AuthService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
-export class AuthModule { }
+export class AuthModule {}

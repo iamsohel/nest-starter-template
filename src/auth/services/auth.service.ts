@@ -11,35 +11,34 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
-    constructor(
-        @InjectRepository(User)
-        private usersRepository: Repository<User>,
-        private jwtService: JwtService
-    ) { }
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+    private jwtService: JwtService
+  ) {}
 
-    async signup(signUpInput: SignUpInput): Promise<SignUpOutput> {
-        const user = this.usersRepository.create(signUpInput);
-        user.password = await hash(user.password, 10)
-        await this.usersRepository.save(user);
-        return user;
-    }
+  async signup(signUpInput: SignUpInput): Promise<SignUpOutput> {
+    const user = this.usersRepository.create(signUpInput);
+    user.password = await hash(user.password, 10);
+    await this.usersRepository.save(user);
+    return user;
+  }
 
-    async signIn(input: SignInInput): Promise<SignInOutput> {
-        const user = await this.usersRepository.findOne({ where: { email: input.email } });
-        if (!user) throw new BadRequestException('Email or password is incorrect');
+  async signIn(input: SignInInput): Promise<SignInOutput> {
+    const user = await this.usersRepository.findOne({
+      where: { email: input.email },
+    });
+    if (!user) throw new BadRequestException('Email or password is incorrect');
 
-        const match = await compare(input.password, user.password);
-        if (!match) throw new BadRequestException('Email or password is incorrect');
-        const payload = {
-            id: user.id,
-            email: user.email,
-        };
+    const match = await compare(input.password, user.password);
+    if (!match) throw new BadRequestException('Email or password is incorrect');
+    const payload = {
+      id: user.id,
+      email: user.email,
+    };
 
-        return {
-            access_token: await this.jwtService.signAsync(payload),
-        };
-    }
-
-
-
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
+  }
 }

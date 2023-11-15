@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 import { plainToClass } from 'class-transformer';
 
 interface ClassConstructor {
-  new (...args: any[]): null;
+  new (...args: any[]): {};
 }
 
 export function Serialize(dto: ClassConstructor) {
@@ -20,6 +20,7 @@ export class SerializeInterceptor implements NestInterceptor {
   constructor(private dto: any) {}
 
   intercept(context: ExecutionContext, handler: CallHandler): Observable<any> {
+    console.log(context);
     return handler.handle().pipe(
       map((data: any) => {
         return plainToClass(this.dto, data, {

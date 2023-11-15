@@ -1,7 +1,7 @@
 import { Controller, Get, Request } from '@nestjs/common';
 import { UsersService } from '../services/users.service';
 import { UserOutput } from '../dtos/user-output.dto';
-import { Serialize } from 'src/common/interceptors/serialize.interceptor';
+import { Serialize } from '../../common/interceptors/serialize.interceptor';
 
 @Controller('users')
 @Serialize(UserOutput)

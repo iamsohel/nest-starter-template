@@ -14,22 +14,23 @@
     "removeComments": true,
     "allowUnusedLabels": false,
     "allowUnreachableCode": false,
+    "strictNullChecks": false,
     // "exactOptionalPropertyTypes": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     // "noPropertyAccessFromIndexSignature": true, @TODO: Pat turn on
     // "noUncheckedIndexedAccess": true, @TODO: Pat turn on
-    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     // "importsNotUsedAsValues": "error", @TODO: Pat turn on
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noImplicitThis": true,
     "allowSyntheticDefaultImports": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
   },
   "include": ["src"],
 }
