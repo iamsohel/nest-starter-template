@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mysql-test-db:
+    image: mysql:8.1.0
+    container_name: vl-hr-mysql-test-db
+    ports:
+      - 3307:3306
+    volumes:
+      - mysqltestdata:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: vl-hr-test-db
+
+volumes:
+  mysqltestdata:
