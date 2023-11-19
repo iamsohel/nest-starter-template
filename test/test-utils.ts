@@ -5,7 +5,6 @@ const config: DataSourceOptions = {
   host: 'localhost',
   username: 'root',
   password: 'password',
-  ssl: false,
   type: 'mysql',
   port: 3307,
   database: TEST_DB_NAME,

@@ -1,5 +1,5 @@
 export default (): any => ({
-  env: process.env.APP_ENV,
+  env: process.env.NODE_ENV,
   port: Number(process.env.APP_PORT) || 4000,
   database: {
     host: process.env.DB_HOST,

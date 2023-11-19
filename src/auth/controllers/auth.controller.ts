@@ -21,7 +21,7 @@ export class AuthController {
 
   @Serialize(SignUpOutput)
   @Public()
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.CREATED)
   @Post('/signup')
   async signUp(@Body() input: SignUpInput): Promise<SignUpOutput> {
     const registeredUser = await this.authService.signup(input);
